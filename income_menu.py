@@ -2,7 +2,7 @@ import income_db
 import income_utils
 import datetime
 
-# Contains all the menu functions for the income section.
+# Contains all the menu functions for the income section of the tracker.
 
 def main_menu():
     print("\nIncome Options")

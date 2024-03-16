@@ -2,7 +2,7 @@ import expenses_db
 import expenses_utils
 import datetime
 
-# Contains all the menu functions for the expenses section.
+# Contains all the menu functions for the expenses section of the tracker.
 
 def main_menu():
     print("\nExpense Options")
