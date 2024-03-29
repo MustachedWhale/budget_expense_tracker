@@ -12,7 +12,6 @@ import budget_menu
 import goals_menu
 import expenses_db
 import income_db
-import budget_db
 import goals_db
             
 ## Main Code ##
@@ -49,13 +48,6 @@ if db_income_cat_result[0] == 1:
     print(f"Error: {db_income_cat_result[1]}")
     db_errors += 1
 
-# Budget db.
-db_budget_result = budget_db.create()
-if db_budget_result[0] == 1:
-    print("\nSorry, we couldn't create the budget database.")
-    print(f"Error: {db_budget_result[1]}")
-    db_errors += 1
-
 # Goals db.
 db_goals_result = goals_db.create()
 if db_goals_result[0] == 1:
@@ -88,11 +80,11 @@ while True:
 
     # View budgeting options.
     elif user_input == '3':
-        income_menu.main_menu()
+        budget_menu.main_menu()
 
     # View financial goal options.
     elif user_input == '4':
-        income_menu.main_menu()    
+        goals_menu.main_menu()    
 
     # Exit program.
     elif user_input == '0':

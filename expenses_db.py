@@ -19,7 +19,7 @@ def create_expenses():
         cursor.execute('''CREATE TABLE IF NOT EXISTS expenses(
                         category TEXT,
                         name TEXT UNIQUE PRIMARY KEY,
-                        amount TEXT,
+                        amount FLOAT,
                         date_added TEXT)''')
         db.commit()
     except Exception as e:
@@ -40,7 +40,7 @@ def create_expense_cats():
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
-        cursor.execute('CREATE TABLE IF NOT EXISTS expense_cats(name TEXT)')
+        cursor.execute('CREATE TABLE IF NOT EXISTS expense_cats(name TEXT, budget FLOAT)')
         db.commit()
     except Exception as e:
         db.rollback()
@@ -51,17 +51,33 @@ def create_expense_cats():
 
     return [0, 0]
 
+# Gets a list of category names.
+def get_cat_names():
+    cat_names = []
+    try:
+        db = sqlite3.connect('data/tracker')
+        cursor = db.cursor()
+        cursor.execute('SELECT name FROM expense_cats')
+        for row in cursor:
+            for category in row:
+                cat_names.append(category)
+    except Exception as e:
+        db.rollback()
+        db.close()
+        return [1, e]
+    finally:
+        db.close()
+    return cat_names
+
 # Gets a list of categories.
 def get_cat_list():
     cat_list = []
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
-        cursor.execute('''SELECT name
-                          FROM expense_cats''')
+        cursor.execute('SELECT * FROM expense_cats')
         for row in cursor:
-            for category in row:
-                cat_list.append(category)
+            cat_list.append(row)
     except Exception as e:
         db.rollback()
         db.close()
@@ -79,8 +95,8 @@ def get_name_list():
         cursor.execute('''SELECT name
                           FROM expenses''')
         for row in cursor:
-            for name in row:
-                name_list.append(name)
+            for expense in row:
+                name_list.append(expense)
     except Exception as e:
         db.rollback()
         db.close()
@@ -215,12 +231,29 @@ def delete_expenses(category):
     return [0, 0]
 
 # Adds a new expense category.
-def add_expense_cat(name):
+def add_expense_cat(name, budget):
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
-        cursor.execute('''INSERT INTO expense_cats(name)
-                          VALUES(?)''', (name,))
+        cursor.execute('''INSERT INTO expense_cats(name,budget)
+                          VALUES(?, ?)''', (name, budget))
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        db.close()
+        return [1, e]
+    finally:
+        db.close()
+    return [0, 0]
+
+# Updates the budget of an expense.
+def update_cat_budget(name, new_budget):
+    try:
+        db = sqlite3.connect('data/tracker')
+        cursor = db.cursor()
+        cursor.execute('''UPDATE expense_cats SET
+                       budget = ? WHERE name = ?''',
+                       (new_budget, name))
         db.commit()
     except Exception as e:
         db.rollback()

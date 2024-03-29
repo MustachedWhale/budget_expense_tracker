@@ -1,5 +1,6 @@
 import income_db
 import income_utils
+import global_utils
 import datetime
 
 # Contains all the menu functions for the income section of the tracker.
@@ -80,7 +81,7 @@ def add_income():
     if len(current_income_cats) != 0:
         print("\nThe current income categories are:")
         for income_cat in current_income_cats:
-            print(income_cat.capitalize())
+            print(global_utils.name_capitalise(income_cat))
     else:
         print("\nYou can't add an income as you haven't added any income categories.")
         return
@@ -116,8 +117,6 @@ def add_income():
     new_income_date = datetime.datetime.today().strftime('%Y-%m-%d')
     new_income_info.append(new_income_date)
 
-    #print(new_income_info)
-
     # Adds the new income to the tracker.
     add_income_result = income_db.add_income(new_income_info)
     if add_income_result[0] == 1:
@@ -125,7 +124,7 @@ def add_income():
         print(f"Error: {add_income_result[1]}")
         return
     elif add_income_result[0] == 0:
-        print(f"\n{new_income_info[1].capitalize()} was successfully added to the database.")
+        print(f"\n{global_utils.name_capitalise(new_income_info[1])} was successfully added to the database.")
         return
     else:
         print("\nSorry, an unexpected error has occurred and the income could not be added to the database.")
@@ -152,27 +151,27 @@ def delete_income():
         return
     
     # Tells the user what's happening.
-    print(f"\nDeleting {income_to_delete.capitalize()} from the database...")
+    print(f"\nDeleting {global_utils.name_capitalise(income_to_delete)} from the database...")
 
     # Deletes the existing income from the database.
     delete_income_result = income_db.delete_income(income_to_delete)
     # Handles unexpected behaviour of the function not returning a list/anything.
     if len(delete_income_result) == 0:
-        print(f"\nAn unexpected error occurred while trying to delete {income_to_delete.capitalize()} from the database.")
+        print(f"\nAn unexpected error occurred while trying to delete {global_utils.name_capitalise(income_to_delete)} from the database.")
         return
     
     # If successful, the first index of the result list is 0.
     if delete_income_result[0] == 0:
-        print(f"\n{income_to_delete.capitalize()} was successfully deleted from the database.")
+        print(f"\n{global_utils.name_capitalise(income_to_delete)} was successfully deleted from the database.")
         return
     # If unsuccessful, the first index will be 1.
     elif delete_income_result[0] == 1:
-        print(f"\nSorry, something went wrong and {income_to_delete.capitalize()} could not be deleted from the database.")
+        print(f"\nSorry, something went wrong and {global_utils.name_capitalise(income_to_delete)} could not be deleted from the database.")
         print(f"Error: {delete_income_result[1]}")
         return
     # Handles behaviour if the result contains anything other than the expected conditions.
     else:
-        print(f"\nAn unexpected error occurred while trying to delete {income_to_delete.capitalize()} from the database.")
+        print(f"\nAn unexpected error occurred while trying to delete {global_utils.name_capitalise(income_to_delete)} from the database.")
         return
 
 # Edits an income.
@@ -200,7 +199,7 @@ def edit_income():
     # Lists the current income.
     print("\nList of current income:\n")
     for income in current_income_names:
-        print(income.capitalize())
+        print(global_utils.name_capitalise(income))
 
     # Gets the name of the income to edit from the user.
     income_name_to_edit = income_utils.get_income_to_edit(current_income_names)
@@ -209,7 +208,7 @@ def edit_income():
         return
 
     # Tells the user what's happening.
-    print(f"\nYou are editing the {income_name_to_edit.capitalize()} income.")
+    print(f"\nYou are editing the {global_utils.name_capitalise(income_name_to_edit)} income.")
 
     # Gets the current info from the database of the income that's going to be edited.
     income_to_edit_current_info = income_db.get_income(income_name_to_edit)
@@ -217,7 +216,7 @@ def edit_income():
     if len(income_to_edit_current_info) != 0:
         # If the get_income() function has returned an error.
         if income_to_edit_current_info[0] == 1:
-            print(f"\nSorry, something went wrong retrieving {income_to_edit_current_info.capitalize}'s information.")
+            print(f"\nSorry, something went wrong retrieving {global_utils.name_capitalise(income_to_edit_current_info)}'s information.")
             print(f"Error: {income_to_edit_current_info[1]}")
             return
 
@@ -236,8 +235,6 @@ def edit_income():
     else:
         new_income_info.append(edited_income_cat)
 
-    #print(new_income_info)
-
     # Gets the change of name if required.
     edited_income_name = income_utils.get_edit_income_name(current_income_names, income_to_edit_current_info[0])
     # If the result is 1, return to the previous menu.
@@ -249,8 +246,6 @@ def edit_income():
     # Otherwise add the new name to new_income_info.
     else:
         new_income_info.append(edited_income_name)
-
-    #print(new_income_info)
 
     # Gets the change of value if required.
     edited_income_amount = income_utils.get_edit_income_amount(income_to_edit_current_info[0])
@@ -264,13 +259,14 @@ def edit_income():
     else:
         new_income_info.append(edited_income_amount)
 
-    #print(new_income_info)
-
     # Gets today's date.
     new_income_date = datetime.datetime.today().strftime('%Y-%m-%d')
     new_income_info.append(new_income_date)
 
-    #print(new_income_info)
+    # Checks if anything has changed. If not, returns.
+    if list(income_to_edit_current_info[0][0:3]) == new_income_info[0:3]:
+        print("\nNo changes were made to the income.")
+        return
 
     # Updates the income with the new info.
     edit_income_result = income_db.update_income(new_income_info, income_to_edit_current_info[0][1])
@@ -279,7 +275,7 @@ def edit_income():
         print(f"Error: {edit_income_result[1]}")
         return
     if edit_income_result[0] == 0:
-        print(f"\n{new_income_info[1].capitalize()} has been successfully updated.")
+        print(f"\n{global_utils.name_capitalise(new_income_info[1])} has been successfully updated.")
         return
     else:
         print("\nSorry, an unexpected error has occurred and the income could not be updated.")    
@@ -304,7 +300,7 @@ def view_all():
     # Prints all the income.
     print("Name -- Category -- Amount -- Date Added")
     for income in income_info:
-        print(f"{income[1].capitalize()} -- {income[0].capitalize()} -- {income[2]} -- {income[3]}")
+        print(f"{global_utils.name_capitalise(income[1])} -- {global_utils.name_capitalise(income[0])} -- {global_utils.amount_format(income[2])} -- {income[3]}")
     
     # Prints how many income have been added.
     if len(income_info) == 1:
@@ -333,7 +329,7 @@ def view_by_category():
     if len(current_income_cats) != 0:
         print("\nThe current income categories are:")
         for income_cat in current_income_cats:
-            print(income_cat.capitalize())
+            print(global_utils.name_capitalise(income_cat))
 
     while True:
         # Gets the income category to view.
@@ -357,12 +353,12 @@ def view_by_category():
         break
 
     # Tells the user what's happening.
-    print(f"\nViewing income in the {cat_to_view.capitalize()} category:\n")
+    print(f"\nViewing income in the {global_utils.name_capitalise(cat_to_view)} category:\n")
 
-    # Prints all the income.
+    # Prints all the income in the category.
     print("Name -- Category -- Amount -- Date Added")
     for income in income_info:
-        print(f"{income[1].capitalize()} -- {income[0].capitalize()} -- {income[2]} -- {income[3]}")
+        print(f"{global_utils.name_capitalise(income[1])} -- {global_utils.name_capitalise(income[0])} -- {global_utils.amount_format(income[2])} -- {income[3]}")
     
     # Prints how many income have been added.
     if len(income_info) == 1:
@@ -389,7 +385,7 @@ def add_category():
     if len(current_income_cats) != 0:
         print("\nThe current income categories are:")
         for income_cat in current_income_cats:
-            print(income_cat.capitalize())
+            print(global_utils.name_capitalise(income_cat))
 
     # Get the name of the new income category.
     new_income_cat_name = income_utils.get_new_cat_name(current_income_cats)
@@ -398,27 +394,27 @@ def add_category():
         return
     
     # Tells the user what's happening.
-    print(f"\nAdding {new_income_cat_name.capitalize()} to the database...")
+    print(f"\nAdding {global_utils.name_capitalise(new_income_cat_name)} to the database...")
 
     # Adds the income category to the database.
     add_cat_result = income_db.add_income_cat(new_income_cat_name)
     # Handles unexpected behaviour of the function not returning a list/anything.
     if len(add_cat_result) == 0:
-        print(f"\nAn unexpected error occurred while trying to add {new_income_cat_name.capitalize()} to the database.")
+        print(f"\nAn unexpected error occurred while trying to add {global_utils.name_capitalise(new_income_cat_name)} to the database.")
         return
     
     # If successful, the first index of the result list is 0.
     if add_cat_result[0] == 0:
-        print(f"\n{new_income_cat_name.capitalize()} was successfully added to the database.")
+        print(f"\n{global_utils.name_capitalise(new_income_cat_name)} was successfully added to the database.")
         return
     # If unsuccessful, the first index will be 1.
     elif add_cat_result[0] == 1:
-        print(f"\nSorry, something went wrong and {new_income_cat_name.capitalize()} could not be added to the database.")
+        print(f"\nSorry, something went wrong and {global_utils.name_capitalise(new_income_cat_name)} could not be added to the database.")
         print(f"Error: {add_cat_result[1]}")
         return
     # Handles behaviour if the result contains anything other than the expected conditions.
     else:
-        print(f"\nAn unexpected error occurred while trying to add {new_income_cat_name.capitalize()} to the database.")
+        print(f"\nAn unexpected error occurred while trying to add {global_utils.name_capitalise(new_income_cat_name)} to the database.")
         return
 
 # Deletes an income category.
@@ -440,7 +436,7 @@ def delete_category():
     if len(current_income_cats) != 0:
         print("\nThe current income categories are:")
         for income_cat in current_income_cats:
-            print(income_cat.capitalize())
+            print(global_utils.name_capitalise(income_cat))
 
     # Get the name of the income category to delete.
     income_cat_to_delete = income_utils.get_cat_to_delete(current_income_cats)
@@ -449,26 +445,26 @@ def delete_category():
         return
     
     # Tells the user what's happening.
-    print(f"\nDeleting {income_cat_to_delete.capitalize()} from the database...")
+    print(f"\nDeleting {global_utils.name_capitalise(income_cat_to_delete)} from the database...")
 
     # Deletes the existing category from the database.
     delete_cat_result = income_db.delete_income_cat(income_cat_to_delete)
     # Handles unexpected behaviour of the function not returning a list/anything.
     if len(delete_cat_result) == 0:
-        print(f"\nAn unexpected error occurred while trying to delete {income_cat_to_delete.capitalize()} from the database.")
+        print(f"\nAn unexpected error occurred while trying to delete {global_utils.name_capitalise(income_cat_to_delete)} from the database.")
         return
     
     # If successful, the first index of the result list is 0.
     if delete_cat_result[0] == 0:
-        print(f"\n{income_cat_to_delete.capitalize()} was successfully deleted from the income categories database.")
+        print(f"\n{global_utils.name_capitalise(income_cat_to_delete)} was successfully deleted from the income categories database.")
     # If unsuccessful, the first index will be 1.
     elif delete_cat_result[0] == 1:
-        print(f"\nSorry, something went wrong and {income_cat_to_delete.capitalize()} could not be deleted from the database.")
+        print(f"\nSorry, something went wrong and {global_utils.name_capitalise(income_cat_to_delete)} could not be deleted from the database.")
         print(f"Error: {delete_cat_result[1]}")
         return
     # Handles behaviour if the result contains anything other than the expected conditions.
     else:
-        print(f"\nAn unexpected error occurred while trying to delete {income_cat_to_delete.capitalize()} from the database.")
+        print(f"\nAn unexpected error occurred while trying to delete {global_utils.name_capitalise(income_cat_to_delete)} from the database.")
         return
     
     # Deletes the income associated with the category from the database.
@@ -480,7 +476,7 @@ def delete_category():
     
     # If successful, the first index of the result list is 0.
     if delete_income_result[0] == 0:
-        print(f"\nincome associated with {income_cat_to_delete.capitalize()} were successfully deleted from the income categories database.")
+        print(f"\nincome associated with {global_utils.name_capitalise(income_cat_to_delete)} were successfully deleted from the income categories database.")
         return
     # If unsuccessful, the first index will be 1.
     elif delete_cat_result[0] == 1:

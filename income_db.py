@@ -19,7 +19,7 @@ def create_income():
         cursor.execute('''CREATE TABLE IF NOT EXISTS income(
                         category TEXT,
                         name TEXT UNIQUE PRIMARY KEY,
-                        amount TEXT,
+                        amount FLOAT,
                         date_added TEXT)''')
         db.commit()
     except Exception as e:
@@ -124,6 +124,25 @@ def get_all_income():
     finally:
         db.close()
     return income_info
+
+# Gets the total income amount of a category.
+def get_cat_income(category):
+    income_total = 0.0
+    try:
+        db = sqlite3.connect('data/tracker')
+        cursor = db.cursor()
+        cursor.execute('''SELECT amount FROM income WHERE
+                       category = ?''',
+                       (category,))
+        for row in cursor:
+            income_total += row
+    except Exception as e:
+        db.rollback()
+        db.close()
+        return [1, e]
+    finally:
+        db.close()
+    return income_total
 
 # Gets income from a single category.
 def get_income_from_category(category):

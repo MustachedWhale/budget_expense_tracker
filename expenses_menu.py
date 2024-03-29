@@ -1,6 +1,7 @@
 import expenses_db
 import expenses_utils
 import datetime
+import global_utils
 
 # Contains all the menu functions for the expenses section of the tracker.
 
@@ -54,7 +55,7 @@ def main_menu():
 # Adds an expense.     
 def add_expense():
     # Get list of current expense categories.
-    current_expense_cats = expenses_db.get_cat_list()
+    current_expense_cats = expenses_db.get_cat_names()
     # If the list is not empty (there might be no categories added).
     if len(current_expense_cats) != 0:
         # If the get_cat_list() function has returned an error.
@@ -80,7 +81,7 @@ def add_expense():
     if len(current_expense_cats) != 0:
         print("\nThe current expense categories are:")
         for expense_cat in current_expense_cats:
-            print(expense_cat.capitalize())
+            print(global_utils.name_capitalise(expense_cat))
     else:
         print("\nYou can't add an expense as you haven't added any expense categories.")
         return
@@ -125,7 +126,7 @@ def add_expense():
         print(f"Error: {add_expense_result[1]}")
         return
     elif add_expense_result[0] == 0:
-        print(f"\n{new_expense_info[1].capitalize()} was successfully added to the database.")
+        print(f"\n{global_utils.name_capitalise(new_expense_info[1])} was successfully added to the database.")
         return
     else:
         print("\nSorry, an unexpected error has occurred and the expense could not be added to the database.")
@@ -152,33 +153,33 @@ def delete_expense():
         return
     
     # Tells the user what's happening.
-    print(f"\nDeleting {expense_to_delete.capitalize()} from the database...")
+    print(f"\nDeleting {global_utils.name_capitalise(expense_to_delete)} from the database...")
 
     # Deletes the existing expense from the database.
     delete_expense_result = expenses_db.delete_expense(expense_to_delete)
     # Handles unexpected behaviour of the function not returning a list/anything.
     if len(delete_expense_result) == 0:
-        print(f"\nAn unexpected error occurred while trying to delete {expense_to_delete.capitalize()} from the database.")
+        print(f"\nAn unexpected error occurred while trying to delete {global_utils.name_capitalise(expense_to_delete)} from the database.")
         return
     
     # If successful, the first index of the result list is 0.
     if delete_expense_result[0] == 0:
-        print(f"\n{expense_to_delete.capitalize()} was successfully deleted from the database.")
+        print(f"\n{global_utils.name_capitalise(expense_to_delete)} was successfully deleted from the database.")
         return
     # If unsuccessful, the first index will be 1.
     elif delete_expense_result[0] == 1:
-        print(f"\nSorry, something went wrong and {expense_to_delete.capitalize()} could not be deleted from the database.")
+        print(f"\nSorry, something went wrong and {global_utils.name_capitalise(expense_to_delete)} could not be deleted from the database.")
         print(f"Error: {delete_expense_result[1]}")
         return
     # Handles behaviour if the result contains anything other than the expected conditions.
     else:
-        print(f"\nAn unexpected error occurred while trying to delete {expense_to_delete.capitalize()} from the database.")
+        print(f"\nAn unexpected error occurred while trying to delete {global_utils.name_capitalise(expense_to_delete)} from the database.")
         return
 
 # Edits an expense.
 def edit_expense():
     # Get list of current expense categories.
-    current_expense_cats = expenses_db.get_cat_list()
+    current_expense_cats = expenses_db.get_cat_names()
     # If the list is not empty (there might be no categories added).
     if len(current_expense_cats) != 0:
         # If the get_cat_list() function has returned an error.
@@ -200,7 +201,7 @@ def edit_expense():
     # Lists the current expenses.
     print("\nList of current expenses:\n")
     for expense in current_expense_names:
-        print(expense.capitalize())
+        print(global_utils.name_capitalise(expense))
 
     # Gets the name of the expense to edit from the user.
     expense_name_to_edit = expenses_utils.get_expense_to_edit(current_expense_names)
@@ -209,7 +210,7 @@ def edit_expense():
         return
 
     # Tells the user what's happening.
-    print(f"\nYou are editing the {expense_name_to_edit.capitalize()} expense.")
+    print(f"\nYou are editing the {global_utils.name_capitalise(expense_name_to_edit)} expense.")
 
     # Gets the current info from the database of the expense that's going to be edited.
     expense_to_edit_current_info = expenses_db.get_expense(expense_name_to_edit)
@@ -217,7 +218,7 @@ def edit_expense():
     if len(expense_to_edit_current_info) != 0:
         # If the get_expense() function has returned an error.
         if expense_to_edit_current_info[0] == 1:
-            print(f"\nSorry, something went wrong retrieving {expense_to_edit_current_info.capitalize}'s information.")
+            print(f"\nSorry, something went wrong retrieving {global_utils.name_capitalise(expense_to_edit_current_info)}'s information.")
             print(f"Error: {expense_to_edit_current_info[1]}")
             return
 
@@ -270,7 +271,10 @@ def edit_expense():
     new_expense_date = datetime.datetime.today().strftime('%Y-%m-%d')
     new_expense_info.append(new_expense_date)
 
-    #print(new_expense_info)
+    # Checks if anything has changed. If not, returns.
+    if list(expense_to_edit_current_info[0][0:3]) == new_expense_info[0:3]:
+        print("\nNo changes were made to the expense.")
+        return
 
     # Updates the expense with the new info.
     edit_expense_result = expenses_db.update_expense(new_expense_info, expense_to_edit_current_info[0][1])
@@ -279,7 +283,7 @@ def edit_expense():
         print(f"Error: {edit_expense_result[1]}")
         return
     if edit_expense_result[0] == 0:
-        print(f"\n{new_expense_info[1].capitalize()} has been successfully updated.")
+        print(f"\n{global_utils.name_capitalise(new_expense_info[1])} has been successfully updated.")
         return
     else:
         print("\nSorry, an unexpected error has occurred and the expense could not be updated.")    
@@ -304,7 +308,7 @@ def view_all():
     # Prints all the expenses.
     print("Name -- Category -- Amount -- Date Added")
     for expense in expense_info:
-        print(f"{expense[1].capitalize()} -- {expense[0].capitalize()} -- {expense[2]} -- {expense[3]}")
+        print(f"{global_utils.name_capitalise(expense[1])} -- {global_utils.name_capitalise(expense[0])} -- {global_utils.amount_format(expense[2])} -- {expense[3]}")
     
     # Prints how many expenses have been added.
     if len(expense_info) == 1:
@@ -315,7 +319,7 @@ def view_all():
 # Views expenses by category.
 def view_by_category():
     # Get list of current expense categories.
-    current_expense_cats = expenses_db.get_cat_list()
+    current_expense_cats = expenses_db.get_cat_names()
 
     # If the list is empty.
     if len(current_expense_cats) == 0:
@@ -333,7 +337,7 @@ def view_by_category():
     if len(current_expense_cats) != 0:
         print("\nThe current expense categories are:")
         for expense_cat in current_expense_cats:
-            print(expense_cat.capitalize())
+            print(global_utils.name_capitalise(expense_cat))
 
     while True:
         # Gets the expense category to view.
@@ -357,12 +361,12 @@ def view_by_category():
         break
 
     # Tells the user what's happening.
-    print(f"\nViewing expenses in the {cat_to_view.capitalize()} category:\n")
+    print(f"\nViewing expenses in the {global_utils.name_capitalise(cat_to_view)} category:\n")
 
     # Prints all the expenses.
     print("Name -- Category -- Amount -- Date Added")
     for expense in expense_info:
-        print(f"{expense[1].capitalize()} -- {expense[0].capitalize()} -- {expense[2]} -- {expense[3]}")
+        print(f"{global_utils.name_capitalise(expense[1])} -- {global_utils.name_capitalise(expense[0])} -- {global_utils.amount_format(expense[2])} -- {expense[3]}")
     
     # Prints how many expenses have been added.
     if len(expense_info) == 1:
@@ -373,7 +377,7 @@ def view_by_category():
 # Adds a new expense category.
 def add_category():
     # Get list of current expense categories.
-    current_expense_cats = expenses_db.get_cat_list()
+    current_expense_cats = expenses_db.get_cat_names()
     # If the list is not empty.
     if len(current_expense_cats) != 0:
         # If the get_cat_list() function has returned an error.
@@ -389,7 +393,7 @@ def add_category():
     if len(current_expense_cats) != 0:
         print("\nThe current expense categories are:")
         for expense_cat in current_expense_cats:
-            print(expense_cat.capitalize())
+            print(global_utils.name_capitalise(expense_cat))
 
     # Get the name of the new expense category.
     new_expense_cat_name = expenses_utils.get_new_cat_name(current_expense_cats)
@@ -397,34 +401,37 @@ def add_category():
     if new_expense_cat_name == 1:
         return
     
+    # Adds a zero budget placeholder to the expense.
+    new_expense_cat_budget = 0.0
+    
     # Tells the user what's happening.
-    print(f"\nAdding {new_expense_cat_name.capitalize()} to the database...")
+    print(f"\nAdding {global_utils.name_capitalise(new_expense_cat_name)} to the database...")
 
     # Adds the expense category to the database.
-    add_cat_result = expenses_db.add_expense_cat(new_expense_cat_name)
+    add_cat_result = expenses_db.add_expense_cat(new_expense_cat_name, new_expense_cat_budget)
     # Handles unexpected behaviour of the function not returning a list/anything.
     if len(add_cat_result) == 0:
-        print(f"\nAn unexpected error occurred while trying to add {new_expense_cat_name.capitalize()} to the database.")
+        print(f"\nAn unexpected error occurred while trying to add {global_utils.name_capitalise(new_expense_cat_name)} to the database.")
         return
     
     # If successful, the first index of the result list is 0.
     if add_cat_result[0] == 0:
-        print(f"\n{new_expense_cat_name.capitalize()} was successfully added to the database.")
+        print(f"\n{global_utils.name_capitalise(new_expense_cat_name)} was successfully added to the database.")
         return
     # If unsuccessful, the first index will be 1.
     elif add_cat_result[0] == 1:
-        print(f"\nSorry, something went wrong and {new_expense_cat_name.capitalize()} could not be added to the database.")
+        print(f"\nSorry, something went wrong and {global_utils.name_capitalise(new_expense_cat_name)} could not be added to the database.")
         print(f"Error: {add_cat_result[1]}")
         return
     # Handles behaviour if the result contains anything other than the expected conditions.
     else:
-        print(f"\nAn unexpected error occurred while trying to add {new_expense_cat_name.capitalize()} to the database.")
+        print(f"\nAn unexpected error occurred while trying to add {global_utils.name_capitalise(new_expense_cat_name)} to the database.")
         return
 
 # Deletes an expense category.
 def delete_category():
     # Get list of current expense categories.
-    current_expense_cats = expenses_db.get_cat_list()
+    current_expense_cats = expenses_db.get_cat_names()
     # If the list is not empty.
     if len(current_expense_cats) != 0:
         # If the get_cat_list() function has returned an error.
@@ -440,7 +447,7 @@ def delete_category():
     if len(current_expense_cats) != 0:
         print("\nThe current expense categories are:")
         for expense_cat in current_expense_cats:
-            print(expense_cat.capitalize())
+            print(global_utils.name_capitalise(expense_cat))
 
     # Get the name of the expense category to delete.
     expense_cat_to_delete = expenses_utils.get_cat_to_delete(current_expense_cats)
@@ -449,26 +456,26 @@ def delete_category():
         return
     
     # Tells the user what's happening.
-    print(f"\nDeleting {expense_cat_to_delete.capitalize()} from the database...")
+    print(f"\nDeleting {global_utils.name_capitalise(expense_cat_to_delete)} from the database...")
 
     # Deletes the existing category from the database.
     delete_cat_result = expenses_db.delete_expense_cat(expense_cat_to_delete)
     # Handles unexpected behaviour of the function not returning a list/anything.
     if len(delete_cat_result) == 0:
-        print(f"\nAn unexpected error occurred while trying to delete {expense_cat_to_delete.capitalize()} from the database.")
+        print(f"\nAn unexpected error occurred while trying to delete {global_utils.name_capitalise(expense_cat_to_delete)} from the database.")
         return
     
     # If successful, the first index of the result list is 0.
     if delete_cat_result[0] == 0:
-        print(f"\n{expense_cat_to_delete.capitalize()} was successfully deleted from the expense categories database.")
+        print(f"\n{global_utils.name_capitalise(expense_cat_to_delete)} was successfully deleted from the expense categories database.")
     # If unsuccessful, the first index will be 1.
     elif delete_cat_result[0] == 1:
-        print(f"\nSorry, something went wrong and {expense_cat_to_delete.capitalize()} could not be deleted from the database.")
+        print(f"\nSorry, something went wrong and {global_utils.name_capitalise(expense_cat_to_delete)} could not be deleted from the database.")
         print(f"Error: {delete_cat_result[1]}")
         return
     # Handles behaviour if the result contains anything other than the expected conditions.
     else:
-        print(f"\nAn unexpected error occurred while trying to delete {expense_cat_to_delete.capitalize()} from the database.")
+        print(f"\nAn unexpected error occurred while trying to delete {global_utils.name_capitalise(expense_cat_to_delete)} from the database.")
         return
     
     # Deletes the expenses associated with the category from the database.
@@ -480,7 +487,7 @@ def delete_category():
     
     # If successful, the first index of the result list is 0.
     if delete_expenses_result[0] == 0:
-        print(f"\nExpenses associated with {expense_cat_to_delete.capitalize()} were successfully deleted from the expense categories database.")
+        print(f"\nExpenses associated with {global_utils.name_capitalise(expense_cat_to_delete)} were successfully deleted from the expense categories database.")
         return
     # If unsuccessful, the first index will be 1.
     elif delete_cat_result[0] == 1:
