@@ -31,9 +31,28 @@ def create():
         db.close()
     return [0, 0]
 
+# Gets goal info based on a name.
+def get_goal_info(name):
+    goal_info = []
+    try:
+        db = sqlite3.connect('data/tracker')
+        cursor = db.cursor()
+        cursor.execute('''SELECT * FROM goals WHERE
+                       name = ?''',
+                       (name,))
+        for row in cursor:
+            goal_info.append(row)
+    except Exception as e:
+        db.rollback()
+        db.close()
+        return [1, e]
+    finally:
+        db.close()
+    return goal_info  
+
 # Gets goals info based on the category.
 def get_goals_list(category):
-    income_info = []
+    goals_info = []
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
@@ -41,14 +60,14 @@ def get_goals_list(category):
                        category = ?''',
                        (category,))
         for row in cursor:
-            income_info.append(row)
+            goals_info.append(row)
     except Exception as e:
         db.rollback()
         db.close()
         return [1, e]
     finally:
         db.close()
-    return income_info   
+    return goals_info   
 
 # Adds a goal.
 def add_goal(goal_info):
@@ -59,6 +78,41 @@ def add_goal(goal_info):
                        (name, category, amount, progress)
                        VALUES(?, ?, ?, ?)''',
                        (goal_info[0], goal_info[1], goal_info[2], goal_info[3]))
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        db.close()
+        return [1, e]
+    finally:
+        db.close()
+    return [0, 0]
+
+# Updates a goal.
+def update_goal(name, updated_goal_info):
+    try:
+        db = sqlite3.connect('data/tracker')
+        cursor = db.cursor()
+        cursor.execute('''UPDATE goals SET
+                       name = ?, category = ?, amount = ?, progress = ?
+                       WHERE name = ?''',
+                       (updated_goal_info[0], updated_goal_info[1], updated_goal_info[2], updated_goal_info[3], name))
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        db.close()
+        return [1, e]
+    finally:
+        db.close()
+    return [0, 0]
+
+# Deletes a goal.
+def delete_goal(name, category):
+    try:
+        db = sqlite3.connect('data/tracker')
+        cursor = db.cursor()
+        cursor.execute('''DELETE FROM goals WHERE
+                       name = ? AND category = ?''',
+                       (name, category))
         db.commit()
     except Exception as e:
         db.rollback()

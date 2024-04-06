@@ -147,7 +147,7 @@ Would you like to change it? Please enter yes or no.
 : ''').lower()
         if new_amount_input == '0':
             return 1
-        if len(new_amount_input[new_amount_input.rfind('.'):1:]) != 2:
+        if len(new_amount_input[new_amount_input.rfind('.')+1:]) != 2:
             print("Please enter a valid amount.")
             continue
         try:

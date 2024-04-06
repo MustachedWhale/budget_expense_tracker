@@ -135,7 +135,8 @@ def get_cat_income(category):
                        category = ?''',
                        (category,))
         for row in cursor:
-            income_total += row
+            for amount in row:
+                income_total += amount
     except Exception as e:
         db.rollback()
         db.close()
@@ -217,7 +218,7 @@ def update_income(updated_income_info, income_name):
     return [0, 0]
 
 # Deletes income associated with a category.
-def delete_income(category):
+def delete_income_from_cat(category):
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()

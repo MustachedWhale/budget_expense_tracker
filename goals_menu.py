@@ -137,6 +137,12 @@ def create_income_goal():
         for goal in current_income_goals:
             print(f"{global_utils.name_capitalise(goal[0])} -- {global_utils.amount_format(goal[2])} -- {global_utils.amount_format(goal[3])}")
 
+    # If the list isn't empty, print the current categories.
+    if len(current_income_cats) != 0:
+        print("\nThe current income categories are:")
+        for income_cat in current_income_cats:
+            print(global_utils.name_capitalise(income_cat))
+
     new_goal_info = []
 
     # Gets the name of the category to add the goal to.
@@ -171,7 +177,7 @@ def create_income_goal():
         print(f"Error: {add_new_goal_result[1]}")
         return
     elif add_new_goal_result[0] == 0:
-        print(f"\n{global_utils.name_capitalise(new_goal_info[0])} was successfully added to the database.")
+        print(f"\nAn income goal for {global_utils.name_capitalise(new_goal_info[0])} was successfully added to the database.")
         return
     else:
         print("\nSorry, an unexpected error has occurred and the goal could not be added to the database.") 
@@ -182,7 +188,80 @@ def edit_goal():
 
 # Deletes a goal.
 def delete_goal():
-    pass
+    # Get list of current saving goals.
+    current_saving_goals = goals_db.get_goals_list('saving')
+    # If the list is not empty (there might be no goals added).
+    if len(current_saving_goals) != 0:
+        # If the get_goals_list() function has returned an error.
+        if current_saving_goals[0] == 1:
+            print("\nSorry, something went wrong retrieving the saving goal names from the database.")
+            print(f"Error: {current_saving_goals[1]}")
+            return
+        
+    # Get list of current income goals.
+    current_income_goals = goals_db.get_goals_list('income')
+    # If the list is not empty (there might be no goals added).
+    if len(current_income_goals) != 0:
+        # If the get_goals_list() function has returned an error.
+        if current_income_goals[0] == 1:
+            print("\nSorry, something went wrong retrieving the income goal names from the database.")
+            print(f"Error: {current_income_goals[1]}")
+            return
+        
+    # If neither list has any goals, tell the user and return.
+    if len(current_income_goals) == 0 and len(current_saving_goals) == 0:
+        print("\nYou don't have any goals to delete.")
+        return
+    
+    print("\nCurrent Saving Goals:")
+    # If there are goals already in the database, print them out to the user.
+    if len(current_saving_goals) != 0:
+        print("Name -- Goal Amount -- Current Progress")
+        for goal in current_saving_goals:
+            print(f"{global_utils.name_capitalise(goal[0])} -- {global_utils.amount_format(goal[2])} -- {global_utils.amount_format(goal[3])}")
+    # Otherwise, tell the user.
+    else:
+        print("No saving goals present.")
+
+    print("\nCurrent Income Goals:")
+    # If there are goals already in the database, print them out to the user.
+    if len(current_income_goals) != 0:
+        print("Category -- Current Income -- Current Progress")
+        for goal in current_income_goals:
+            print(f"{global_utils.name_capitalise(goal[0])} -- {global_utils.amount_format(goal[2])} -- {global_utils.amount_format(goal[3])}")
+    # Otherwise, tell the user.
+    else:
+        print("No income goals present.")
+
+    # Get the name and category of the goal to delete.
+    goal_to_delete = goals_utils.get_goal_to_delete(current_income_goals, current_saving_goals)
+    # Returns to the previous menu if goal_to_delete returns 1.
+    if goal_to_delete == 1:
+        return
+    
+    # Tells the user what's happening.
+    print(f"\nDeleting {global_utils.name_capitalise(goal_to_delete[0])} from the database...")
+
+    # Deletes the existing goal from the database.
+    delete_goal_result = goals_db.delete_goal(goal_to_delete[0], goal_to_delete[1])
+    # Handles unexpected behaviour of the function not returning a list/anything.
+    if len(delete_goal_result) == 0:
+        print(f"\nAn unexpected error occurred while trying to delete {global_utils.name_capitalise(goal_to_delete[0])} from the database.")
+        return
+    
+    # If successful, the first index of the result list is 0.
+    if delete_goal_result[0] == 0:
+        print(f"\n{global_utils.name_capitalise(goal_to_delete[0])} was successfully deleted from the database.")
+    # If unsuccessful, the first index will be 1.
+    elif delete_goal_result[0] == 1:
+        print(f"\nSorry, something went wrong and {global_utils.name_capitalise(goal_to_delete[0])} could not be deleted from the database.")
+        print(f"Error: {delete_goal_result[1]}")
+        return
+    # Handles behaviour if the result contains anything other than the expected conditions.
+    else:
+        print(f"\nAn unexpected error occurred while trying to delete {global_utils.name_capitalise(goal_to_delete[0])} from the database.")
+        return
+    
 
 # Adds money to a saving goal.
 def add_to_saving_goal():
@@ -190,4 +269,47 @@ def add_to_saving_goal():
 
 # Views all goals.
 def view_all_goals():
-    pass
+    # Get list of current saving goals.
+    current_saving_goals = goals_db.get_goals_list('saving')
+    # If the list is not empty (there might be no goals added).
+    if len(current_saving_goals) != 0:
+        # If the get_goals_list() function has returned an error.
+        if current_saving_goals[0] == 1:
+            print("\nSorry, something went wrong retrieving the saving goal names from the database.")
+            print(f"Error: {current_saving_goals[1]}")
+            return
+        
+    # Get list of current income goals.
+    current_income_goals = goals_db.get_goals_list('income')
+    # If the list is not empty (there might be no goals added).
+    if len(current_income_goals) != 0:
+        # If the get_goals_list() function has returned an error.
+        if current_income_goals[0] == 1:
+            print("\nSorry, something went wrong retrieving the income goal names from the database.")
+            print(f"Error: {current_income_goals[1]}")
+            return
+        
+    # If neither list has any goals, tell the user and return.
+    if len(current_income_goals) == 0 and len(current_saving_goals) == 0:
+        print("\nYou don't have any goals to view.")
+        return
+    
+    print("\nCurrent Saving Goals:")
+    # If there are goals already in the database, print them out to the user.
+    if len(current_saving_goals) != 0:
+        print("Name -- Goal Amount -- Current Progress")
+        for goal in current_saving_goals:
+            print(f"{global_utils.name_capitalise(goal[0])} -- {global_utils.amount_format(goal[2])} -- {global_utils.amount_format(goal[3])}")
+    # Otherwise, tell the user.
+    else:
+        print("No saving goals present.")
+
+    print("\nCurrent Income Goals:")
+    # If there are goals already in the database, print them out to the user.
+    if len(current_income_goals) != 0:
+        print("Category -- Current Income -- Current Progress")
+        for goal in current_income_goals:
+            print(f"{global_utils.name_capitalise(goal[0])} -- {global_utils.amount_format(goal[2])} -- {global_utils.amount_format(goal[3])}")
+    # Otherwise, tell the user.
+    else:
+        print("No income goals present.")

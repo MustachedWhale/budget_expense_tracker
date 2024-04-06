@@ -1,6 +1,8 @@
 import income_db
 import income_utils
 import global_utils
+import goals_utils
+import goals_db
 import datetime
 
 # Contains all the menu functions for the income section of the tracker.
@@ -86,6 +88,12 @@ def add_income():
         print("\nYou can't add an income as you haven't added any income categories.")
         return
     
+    # If income names exist, print them.
+    if len(current_income_names) != 0:
+        print("\nList of current income:")
+        for income in current_income_names:
+            print(global_utils.name_capitalise(income))
+    
     # Create an empty list to add the new income data to.
     new_income_info = []
 
@@ -125,9 +133,11 @@ def add_income():
         return
     elif add_income_result[0] == 0:
         print(f"\n{global_utils.name_capitalise(new_income_info[1])} was successfully added to the database.")
-        return
     else:
         print("\nSorry, an unexpected error has occurred and the income could not be added to the database.")
+    
+    # Updates income goals.
+    goals_utils.update_income_goals()
 
 # Deletes an income
 def delete_income():
@@ -143,6 +153,12 @@ def delete_income():
 
     # Tells the user what's happening.
     print("\nDeleting an income.")
+
+    # If income names exist, print them.
+    if len(current_income_names) != 0:
+        print("\nList of current income:")
+        for income in current_income_names:
+            print(global_utils.name_capitalise(income))
 
     # Get the name of the income to delete.
     income_to_delete = income_utils.get_income_to_delete(current_income_names)
@@ -163,7 +179,6 @@ def delete_income():
     # If successful, the first index of the result list is 0.
     if delete_income_result[0] == 0:
         print(f"\n{global_utils.name_capitalise(income_to_delete)} was successfully deleted from the database.")
-        return
     # If unsuccessful, the first index will be 1.
     elif delete_income_result[0] == 1:
         print(f"\nSorry, something went wrong and {global_utils.name_capitalise(income_to_delete)} could not be deleted from the database.")
@@ -173,6 +188,9 @@ def delete_income():
     else:
         print(f"\nAn unexpected error occurred while trying to delete {global_utils.name_capitalise(income_to_delete)} from the database.")
         return
+    
+    # Updates income goals.
+    goals_utils.update_income_goals()
 
 # Edits an income.
 def edit_income():
@@ -196,10 +214,11 @@ def edit_income():
             print(f"Error: {current_income_names[1]}")
             return
 
-    # Lists the current income.
-    print("\nList of current income:\n")
-    for income in current_income_names:
-        print(global_utils.name_capitalise(income))
+    # If income names exist, print them.
+    if len(current_income_names) != 0:
+        print("\nList of current income:")
+        for income in current_income_names:
+            print(global_utils.name_capitalise(income))
 
     # Gets the name of the income to edit from the user.
     income_name_to_edit = income_utils.get_income_to_edit(current_income_names)
@@ -276,9 +295,11 @@ def edit_income():
         return
     if edit_income_result[0] == 0:
         print(f"\n{global_utils.name_capitalise(new_income_info[1])} has been successfully updated.")
-        return
     else:
         print("\nSorry, an unexpected error has occurred and the income could not be updated.")    
+
+    # Updates income goals.
+    goals_utils.update_income_goals()
 
 # Views all income.
 def view_all():
@@ -306,7 +327,7 @@ def view_all():
     if len(income_info) == 1:
         print(f"\nYou have added 1 income to the database.")
     else:
-        print(f"\nYou have added {len(income_info)} incomes to the database.")
+        print(f"\n{len(income_info)} lots of income are present in the database.")
 
 # Views income by category.
 def view_by_category():
@@ -364,7 +385,7 @@ def view_by_category():
     if len(income_info) == 1:
         print(f"\nThere is 1 income in this category.")
     else:
-        print(f"\nThere are {len(income_info)} income in this category.")
+        print(f"\n{len(income_info)} lots of income have been added to this category.")
 
 # Adds a new income category.
 def add_category():
@@ -468,7 +489,7 @@ def delete_category():
         return
     
     # Deletes the income associated with the category from the database.
-    delete_income_result = income_db.delete_income(income_cat_to_delete)
+    delete_income_result = income_db.delete_income_from_cat(income_cat_to_delete)
     # Handles unexpected behaviour of the function not returning a list/anything.
     if len(delete_income_result) == 0:
         print(f"\nAn unexpected error occurred while trying to delete income from the database.")
@@ -476,8 +497,7 @@ def delete_category():
     
     # If successful, the first index of the result list is 0.
     if delete_income_result[0] == 0:
-        print(f"\nincome associated with {global_utils.name_capitalise(income_cat_to_delete)} were successfully deleted from the income categories database.")
-        return
+        print(f"\nAny income associated with {global_utils.name_capitalise(income_cat_to_delete)} was successfully deleted from the income categories database.")
     # If unsuccessful, the first index will be 1.
     elif delete_cat_result[0] == 1:
         print(f"\nSorry, something went wrong and the income could not be deleted from the database.")
@@ -487,3 +507,21 @@ def delete_category():
     else:
         print(f"\nAn unexpected error occurred while trying to delete income from the database.")
         return    
+    
+    # Deletes the goal associated with the income from the goals database if one exists.
+    income_goals_list = goals_db.get_goals_list(income_cat_to_delete)
+    # If the list is not empty.
+    if len(income_goals_list) != 0:
+        # If the get_goals_list() function has returned an error.
+        if income_goals_list[0] == 1:
+            print("\nSorry, something went wrong getting the income goals from the database.")
+            print(f"Error: {income_goals_list[1]}")
+            return
+        
+    if income_cat_to_delete in income_goals_list:
+        delete_goal_result = goals_db.delete_goal(income_cat_to_delete, 'income')
+        if delete_goal_result[0] == 0:
+            print(f"\nAny goals associated with {global_utils.name_capitalise(income_cat_to_delete)} were successfully deleted from the database.")
+        if delete_goal_result[0] == 1:
+            print("\nSorry, something went wrong deleting the income goal.")
+            print(f"Error: {delete_goal_result[1]}")
