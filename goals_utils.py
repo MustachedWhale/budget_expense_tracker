@@ -58,6 +58,132 @@ def get_income_of_category(category):
         print(f"Error: {category_income[1]}")
         return 1
 
+# Gets the name of the goal to edit.
+def get_goal_to_edit(income_goals, saving_goals):
+    while True:
+        print('')
+        name_input = input('''Please enter the name of the goal you want to edit. Enter 0 to return to the previous menu.
+: ''').lower()
+        if name_input == '0':
+            return 1
+        income_count = 0
+        saving_count = 0
+        for goal in income_goals:
+            if name_input == goal[0]:
+                income_count += 1
+        for goal in saving_goals:
+            if name_input == goal[0]:
+                saving_count += 1
+        if income_count == 1 and saving_count == 0:
+            return [name_input, 'income']
+        elif income_count == 0 and saving_count == 1:
+            return [name_input, 'saving']
+        elif income_count == 1 and saving_count == 1:
+            choice_result = choose_income_or_savings(name_input, income_goals, saving_goals)
+            if choice_result == 'income' or choice_result == 'saving':
+                return [name_input, choice_result]
+            else:
+                return 1
+        else:
+            print("\nYou did not enter the name of a goal.")
+
+# Gets a new name for the goal if required.
+def get_edit_goal_name(current_saving_goals, goal_name):
+    # Checks if the user wants to edit the goal name.    
+    while True:
+        print('')
+        confirm_input = input(f'''The name of the goal is {global_utils.name_capitalise(goal_name)}.
+Would you like to change it? Please enter yes or no.
+: ''').lower()
+        if confirm_input == 'yes' or confirm_input == 'y':
+            break
+        elif confirm_input == 'no' or confirm_input == 'n':
+            return 2
+        else:
+            print("\nPlease enter yes or no.")
+
+    # Prints a list of current goal names.
+    print('\nThe current goal names are:')
+    for goal in current_saving_goals:
+        print(global_utils.name_capitalise(goal[0]))
+
+    # Gets a new name if needed.
+    while True:
+        print('')
+        new_name_input = input(f'''Please enter a new name for the goal. It must be unique.
+Enter 0 to return to the previous menu.
+: ''').lower()
+        if new_name_input == '0':
+            return 1
+        if new_name_input in current_saving_goals:
+            print("\nThe goal name you entered matches an existing name.")
+            continue
+        return new_name_input
+
+# Gets a new target amount for the goal if required. 
+def get_edit_goal_target(goal_target):
+    # Checks if the user wants to edit the goal target.
+    while True:
+        print('')
+        confirm_input = input(f'''The target value of the goal is {global_utils.amount_format(goal_target)}.
+Would you like to change it? Please enter yes or no.
+: ''').lower()
+        if confirm_input == 'yes' or confirm_input == 'y':
+            break
+        elif confirm_input == 'no' or confirm_input == 'n':
+            return 2
+        else:
+            print("\nPlease enter yes or no.")
+
+    # Gets a new target amount if required.
+    while True:
+        print('')
+        new_target_amount_input = input('''Please enter the new target value. Enter 0 to return to the previous menu.
+: ''').lower()
+        if new_target_amount_input == '0':
+            return 1
+        if len(new_target_amount_input[new_target_amount_input.rfind('.')+1:]) != 2:
+            print("Please enter a valid amount.")
+            continue
+        try:
+            new_amount = float(new_target_amount_input)
+        except ValueError:
+            print("Please enter a valid amount.")
+            continue
+        return new_amount
+
+# Gets a new progress amount for the goal if required.
+def get_edit_goal_progress(goal_progress):
+    # Checks if the user wants to edit the goal progress.
+    while True:
+        print('')
+        confirm_input = input(f'''Your progress towards the goal is {global_utils.amount_format(goal_progress)}.
+Would you like to change it? Please enter yes or no.
+: ''').lower()
+        if confirm_input == 'yes' or confirm_input == 'y':
+            break
+        elif confirm_input == 'no' or confirm_input == 'n':
+            return 2
+        else:
+            print("\nPlease enter yes or no.")
+
+    # Gets a new progress amount if required.
+    while True:
+        print('')
+        new_progress_amount_input = input('''Please enter the new amount. Enter 0 to return to the previous menu.
+: ''').lower()
+        if new_progress_amount_input == '0':
+            return 1
+        if len(new_progress_amount_input[new_progress_amount_input.rfind('.')+1:]) != 2:
+            print("Please enter a valid amount.")
+            continue
+        try:
+            new_amount = float(new_progress_amount_input)
+        except ValueError:
+            print("Please enter a valid amount.")
+            continue
+        return new_amount
+
 # Gets the name of the goal to delete.
 def get_goal_to_delete(income_goals, saving_goals):
     while True:

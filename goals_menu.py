@@ -184,7 +184,137 @@ def create_income_goal():
 
 # Edits a goal.
 def edit_goal():
-    pass
+    # Get list of current saving goals.
+    current_saving_goals = goals_db.get_goals_list('saving')
+    # If the list is not empty (there might be no goals added).
+    if len(current_saving_goals) != 0:
+        # If the get_goals_list() function has returned an error.
+        if current_saving_goals[0] == 1:
+            print("\nSorry, something went wrong retrieving the saving goal names from the database.")
+            print(f"Error: {current_saving_goals[1]}")
+            return
+        
+    # Get list of current income goals.
+    current_income_goals = goals_db.get_goals_list('income')
+    # If the list is not empty (there might be no goals added).
+    if len(current_income_goals) != 0:
+        # If the get_goals_list() function has returned an error.
+        if current_income_goals[0] == 1:
+            print("\nSorry, something went wrong retrieving the income goal names from the database.")
+            print(f"Error: {current_income_goals[1]}")
+            return
+        
+    # If neither list has any goals, tell the user and return.
+    if len(current_income_goals) == 0 and len(current_saving_goals) == 0:
+        print("\nYou don't have any goals to edit.")
+        return
+    
+    print("\nCurrent Saving Goals:")
+    # If there are goals already in the database, print them out to the user.
+    if len(current_saving_goals) != 0:
+        print("Name -- Goal Amount -- Current Progress")
+        for goal in current_saving_goals:
+            print(f"{global_utils.name_capitalise(goal[0])} -- {global_utils.amount_format(goal[2])} -- {global_utils.amount_format(goal[3])}")
+    # Otherwise, tell the user.
+    else:
+        print("No saving goals present.")
+
+    print("\nCurrent Income Goals:")
+    # If there are goals already in the database, print them out to the user.
+    if len(current_income_goals) != 0:
+        print("Category -- Current Income -- Current Progress")
+        for goal in current_income_goals:
+            print(f"{global_utils.name_capitalise(goal[0])} -- {global_utils.amount_format(goal[2])} -- {global_utils.amount_format(goal[3])}")
+    # Otherwise, tell the user.
+    else:
+        print("No income goals present.")
+
+    # Get the name and category of the goal to edit.
+    goal_to_edit = goals_utils.get_goal_to_edit(current_income_goals, current_saving_goals)
+    # Returns to the previous menu if goal_to_edit returns 1.
+    if goal_to_edit == 1:
+        return
+    
+    # Tells the user what's happening.
+    print(f"\nYou are editing the {global_utils.name_capitalise(goal_to_edit[0])} {goal_to_edit[1]} goal.")
+
+    # Gets the current goal info.
+    if goal_to_edit[1] == 'saving':
+        for goal in current_saving_goals:
+            for item in goal:
+                if goal_to_edit[0] == item:
+                    goal_info = list(goal)
+    else:
+        for goal in current_income_goals:
+            for item in goal:
+                if goal_to_edit[0] == item:
+                    goal_info = list(goal)
+    
+    new_goal_info = []
+
+    # Gets a change of name if the goal is a saving goal.
+    if goal_to_edit[1] == 'saving':
+        edited_goal_name = goals_utils.get_edit_goal_name(current_saving_goals, goal_to_edit[0])
+        # If the result is 1, return to the previous menu.
+        if edited_goal_name == 1:
+            return
+        # If the result is 2, no change so add current info to new_income_info
+        elif edited_goal_name == 2:
+            new_goal_info.append(goal_info[0])
+        # Otherwise add the new name to new_income_info.
+        else:
+            new_goal_info.append(edited_goal_name)
+    # If it's an income goal as you can't change the category for the goal.
+    else:
+        new_goal_info.append(goal_info[0])
+    
+    # Adds the category of the goal to the new info.
+    new_goal_info.append(goal_info[1])
+
+    # Gets the change of target value if required.
+    edited_target_amount = goals_utils.get_edit_goal_target(goal_info[2])
+    # If the result is 1, return to the previous menu.
+    if edited_target_amount == 1:
+        return
+    # If the result is 2, no change so add current info to new_income_info
+    elif edited_target_amount == 2:
+        new_goal_info.append(goal_info[2])
+    # Otherwise add the new amount to new_goal_info.
+    else:
+        new_goal_info.append(edited_target_amount)
+
+    # Gets a change of progress value if the goal is a saving goal.
+    if goal_to_edit[1] == 'saving':
+        # Gets the change of saving progress value if required.
+        edited_progress_amount = goals_utils.get_edit_goal_progress(goal_info[3])
+        # If the result is 1, return to the previous menu.
+        if edited_progress_amount == 1:
+            return
+        # If the result is 2, no change so add current info to new_income_info
+        elif edited_progress_amount == 2:
+            new_goal_info.append(goal_info[3])
+        # Otherwise add the new amount to new_goal_info.
+        else:
+            new_goal_info.append(edited_target_amount)
+    # If the goal is income, the progress is calculated automatically so can't be changed.
+    else:
+        new_goal_info.append(goal_info[3])
+        
+    # Checks if anything has changed. If not, returns.
+    if goal_info == new_goal_info:
+        print("\nNo changes were made to the goal.")
+        return
+    
+    # Updates the income with the new info.
+    edit_goal_result = goals_db.update_goal(goal_to_edit[0], new_goal_info)
+    if edit_goal_result[0] == 1:
+        print("\nSorry, something went wrong while updating the goal.")
+        print(f"Error: {edit_goal_result[1]}")
+        return
+    if edit_goal_result[0] == 0:
+        print(f"\n{global_utils.name_capitalise(new_goal_info[0])} has been successfully updated.")
+    else:
+        print("\nSorry, an unexpected error has occurred and the goal could not be updated.")
 
 # Deletes a goal.
 def delete_goal():

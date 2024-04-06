@@ -153,7 +153,7 @@ Would you like to change it? Please enter yes or no.
         try:
             new_amount = float(new_amount_input)
         except ValueError:
-            print("Please enter a valud amount.")
+            print("Please enter a valid amount.")
             continue
         return new_amount
         

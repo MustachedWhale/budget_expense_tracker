@@ -1,8 +1,11 @@
 ## Overview ##
-# The bookstore_main program has been split up into three modules to try and keep the main program clean.
-# The menu.py module contains the top-level menu functions, which call seperate functions to get information from the user and pass that information into the database.
-# The user.py module contains the functions that interact with the user.
-# The db.py module contains the functions that interact with the database.
+# The program has been split into multiple files to try and keep the main program clean.
+# The main.py program calls functions to create the database tables and then calls functions from other modules, depending on what the user selects.
+# Each section contains a menu.py, utils.py and db.py file (the budget section imports the expenses_db.py file).
+# - db.py files interact with the database for that section.
+# - menu.py files contain the menu functions for that section of the app.
+# - utils.py files contain utility functions that generally get information from the user. 
+# The global_utils.py file contains useful utility functions for capitalisation and formatting money.
 
 
 ## Imports ##
