@@ -265,7 +265,58 @@ def delete_goal():
 
 # Adds money to a saving goal.
 def add_to_saving_goal():
-    pass
+    # Get list of current saving goals.
+    current_saving_goals = goals_db.get_goals_list('saving')
+    # If the list is not empty (there might be no goals added).
+    if len(current_saving_goals) != 0:
+        # If the get_goals_list() function has returned an error.
+        if current_saving_goals[0] == 1:
+            print("\nSorry, something went wrong retrieving the saving goal names from the database.")
+            print(f"Error: {current_saving_goals[1]}")
+            return
+        
+    print("\nCurrent Saving Goals:")
+    # If there are goals already in the database, print them out to the user.
+    if len(current_saving_goals) != 0:
+        print("Name -- Goal Amount -- Current Progress")
+        for goal in current_saving_goals:
+            print(f"{global_utils.name_capitalise(goal[0])} -- {global_utils.amount_format(goal[2])} -- {global_utils.amount_format(goal[3])}")
+    # Otherwise, tell the user and return to the previous menu.
+    else:
+        print("No saving goals present.")
+        return
+    
+    # Get the name of the goal to add to.
+    goal_to_add_to = goals_utils.get_goal_to_add_to(current_saving_goals)
+    # Returns to the previous menu if goal_to_add_to returns 1.
+    if goal_to_add_to == 1:
+        return
+    
+    # Gets the amount of money to add to the goal.
+    amount_to_add = goals_utils.get_amount_to_add_to_goal()
+    # Returns to the previous menu if amount_to_add returns 1.
+    if amount_to_add == 1:
+        return
+    
+    # Gets the amount currently saved.
+    for goal in current_saving_goals:
+        if goal_to_add_to == goal[0]:
+            current_amount_saved = goal[3]
+
+    # Adds the amount of money to add to the amount currently saved.
+    new_amount = amount_to_add + current_amount_saved
+
+    # Updates the goal to include the new amount.
+    update_saving_goal_result = goals_db.update_saving_goal_progress(goal_to_add_to, new_amount)
+    if update_saving_goal_result[0] == 1:
+        print("\nSorry, something went wrong adding money to your goal.")
+        print(f"Error: {update_saving_goal_result[1]}")
+        return
+    elif update_saving_goal_result[0] == 0:
+        print(f"\n{global_utils.amount_format(amount_to_add)} has been added to {global_utils.name_capitalise(goal_to_add_to)}.")
+        return
+    else:
+        print("\nSorry, an unexpected error has occurred and the goal could not be updated.") 
 
 # Views all goals.
 def view_all_goals():

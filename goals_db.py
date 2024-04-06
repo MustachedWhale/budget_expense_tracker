@@ -105,6 +105,22 @@ def update_goal(name, updated_goal_info):
         db.close()
     return [0, 0]
 
+def update_saving_goal_progress(goal_name, new_progress):
+    try:
+        db = sqlite3.connect('data/tracker')
+        cursor = db.cursor()
+        cursor.execute('''UPDATE goals SET
+                       progress = ? WHERE name = ?''',
+                       (new_progress, goal_name))
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        db.close()
+        return [1, e]
+    finally:
+        db.close()
+    return [0, 0]
+
 # Deletes a goal.
 def delete_goal(name, category):
     try:

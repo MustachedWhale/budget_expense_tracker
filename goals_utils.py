@@ -87,6 +87,38 @@ def get_goal_to_delete(income_goals, saving_goals):
         else:
             print("\nYou did not enter the name of a goal.")
 
+# Gets the name of the goal to add to.
+def get_goal_to_add_to(saving_goals):
+    while True:
+        print('')
+        goal_input = input('''Please enter the name of the goal you want to add to. Enter 0 to return to the previous menu.
+: ''').lower()
+        if goal_input == '0':
+            return 1
+        for goal in saving_goals:
+            if goal_input in goal:
+                return goal_input
+        else:
+            print("\nYou did not enter the name of a goal.")
+
+# Gets the amount to add to the goal.
+def get_amount_to_add_to_goal():
+    while True:
+        print('')
+        amount_input = input('''Please enter the amount you want to add to this goal. Enter 0 to return to the previous menu.
+: ''').lower()
+        if amount_input == '0':
+            return 1
+        if len(amount_input[amount_input.rfind('.')+1:]) != 2:
+            print("\nPlease enter a valid amount.")
+            continue
+        try:
+            amount = float(amount_input)
+        except ValueError:
+            print("\nPlease enter a valid amount.")
+            continue
+        return amount
+
 # Gets the choice if a goal is present in both the income and saving goals lists.
 def choose_income_or_savings(name, income_goals, saving_goals):
     print(f"\n{global_utils.name_capitalise(name)} is present as both a saving goal and an income goal.")
