@@ -8,6 +8,15 @@ import datetime
 # Contains all the menu functions for the income section of the tracker.
 
 def main_menu():
+    """
+    Lets the user select an income option.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     print("\nIncome Options")
 
     while True:
@@ -56,6 +65,15 @@ def main_menu():
 
 # Adds an income.     
 def add_income():
+    """
+    Adds an income to the database.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current income categories.
     current_income_cats = income_db.get_cat_list()
     # If the list is not empty (there might be no categories added).
@@ -141,6 +159,15 @@ def add_income():
 
 # Deletes an income
 def delete_income():
+    """
+    Deletes an income from the database.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current income names.
     current_income_names = income_db.get_name_list()
     # If the list is not empty (there might be no income added).
@@ -194,6 +221,15 @@ def delete_income():
 
 # Edits an income.
 def edit_income():
+    """
+    Edits an income.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current income categories.
     current_income_cats = income_db.get_cat_list()
     # If the list is not empty (there might be no categories added).
@@ -303,6 +339,15 @@ def edit_income():
 
 # Views all income.
 def view_all():
+    """
+    Prints all income for the user.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of all income.
     income_info = income_db.get_all_income()
     # If the list is empty.
@@ -331,6 +376,15 @@ def view_all():
 
 # Views income by category.
 def view_by_category():
+    """
+    Prints the income from a category for the user.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current income categories.
     current_income_cats = income_db.get_cat_list()
 
@@ -389,6 +443,15 @@ def view_by_category():
 
 # Adds a new income category.
 def add_category():
+    """
+    Adds a new income category to the database.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current income categories.
     current_income_cats = income_db.get_cat_list()
     # If the list is not empty.
@@ -440,6 +503,15 @@ def add_category():
 
 # Deletes an income category.
 def delete_category():
+    """
+    Deletes an income category from the database.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current income categories.
     current_income_cats = income_db.get_cat_list()
     # If the list is not empty.

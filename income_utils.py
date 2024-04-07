@@ -3,6 +3,16 @@ import global_utils
 
 # Gets the name of a new category.
 def get_new_cat_name(current_income_cats):
+    """
+    Gets the name of a new income category.
+
+    Args:
+        current_income_cats: A list of the existing income categories. (list of strings)
+        
+    Returns:
+        cat_input: The name of the new income category. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         cat_input = input('''Please describe the income category. The name must be unique.
@@ -17,6 +27,16 @@ Enter 0 to return to the previous menu.
 
 # Gets the name of an income category for a new income.
 def get_new_income_cat(current_income_cats):
+    """
+    Gets the name of an income category for a new income.
+
+    Args:
+        current_income_cats: A list of the existing income categories. (list of strings)
+        
+    Returns:
+        cat_input: The name of the income category for the new saving goal. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         cat_input = input('''Please enter the name of the category you wish to add the income to. Enter 0 to cancel.
@@ -30,6 +50,16 @@ def get_new_income_cat(current_income_cats):
 
 # Gets the name of a new income.
 def get_new_income_name(current_income_names):
+    """
+    Gets the name of a new income.
+
+    Args:
+        current_income_names: A list of the existing income names. (list of strings)
+        
+    Returns:
+        name_input: The name for the new saving goal. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         name_input = input('''Please describe the income. The name must be unique.
@@ -44,6 +74,16 @@ Enter 0 to return to the previous menu.
 
 # Gets the amount of a new income.
 def get_new_income_amount():
+    """
+    Gets the amount of a new income.
+
+    Args:
+        None
+        
+    Returns:
+        amount: The amount of the new income. (float)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         amount_input = input('''Please enter the amount of the income. Enter 0 to return to the previous menu.
@@ -62,6 +102,17 @@ def get_new_income_amount():
 
 # Gets the category for an income edit. 
 def get_edit_income_cat(current_income_cats, current_income_info):
+    """
+    Gets a new category when editing an income.
+
+    Args:
+        current_income_cats: A list of the existing income categories. (list of strings)
+        current_income_info: A list of the information of the current income. (list of strings, floats)
+        
+    Returns:
+        new_cat_input: The new name of the income category for a goal. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     # Checks if the user wants to edit the income category.
     while True:
         print('')
@@ -94,6 +145,17 @@ Would you like to change it? Please enter yes or no.
 
 # Gets a new name for an income edit.
 def get_edit_income_name(current_income_names, current_income_info):
+    """
+    Gets the new name of an income when editing.
+
+    Args:
+        current_income_names: A list of the existing income names. (list of strings)
+        current_income_info: A list of the information of the current income. (list of strings, floats)
+        
+    Returns:
+        new_name_input: The new name of the saving goal. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     # Checks if the user wants to edit the income name.    
     while True:
         print('')
@@ -127,6 +189,16 @@ Enter 0 to return to the previous menu.
 
 # Gets a new amount for an income edit.
 def get_edit_income_amount(current_income_info):
+    """
+    Gets the new amount for an income when editing.
+
+    Args:
+        current_income_info: A list of the information of the current income. (list of strings, floats)
+        
+    Returns:
+        new_amount: The new amount for the saving goal. (float)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     # Checks if the user wants to edit the income amount.
     while True:
         print('')
@@ -158,7 +230,17 @@ Would you like to change it? Please enter yes or no.
         return new_amount
         
 # Gets the name of the income to edit.        
-def get_income_to_edit(current_income_names):
+def get_income_to_edit(current_income_names):   
+    """
+    Gets the name of the income to edit.
+
+    Args:
+        current_income_names: A list of the names of the current income. (list of strings)
+        
+    Returns:
+        name_input: The name of the income to edit. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         name_input = input('''Please enter the name of the income you want to edit. Enter 0 to return to the previous menu.
@@ -172,6 +254,16 @@ def get_income_to_edit(current_income_names):
 
 # Gets the name of the income to delete.
 def get_income_to_delete(current_income_names):
+    """
+    Gets the name of the income to delete.
+
+    Args:
+        current_income_names: A list of the names of the current income. (list of strings)
+        
+    Returns:
+        name_input: The name of the income to delete. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         name_input = input('''Please enter the name of the income you want to delete. Enter 0 to return to the previous menu.
@@ -185,6 +277,16 @@ def get_income_to_delete(current_income_names):
 
 # Gets the name of the category to view.
 def get_cat_to_view(current_income_cats):
+    """
+    Gets the name of the category to view.
+
+    Args:
+        current_income_cats: A list of the names of the current income categories. (list of strings)
+        
+    Returns:
+        cat_input: The name of the income category to view. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         cat_input = input('''Please enter the name of the category you want to view. Enter 0 to return to the previous menu.
@@ -198,6 +300,16 @@ def get_cat_to_view(current_income_cats):
 
 # Gets the name of the category to delete.
 def get_cat_to_delete(current_income_cats):
+    """
+    Gets the name of the category to delete.
+
+    Args:
+        current_income_cats: A list of the names of the current income categories. (list of strings)
+        
+    Returns:
+        cat_input: The name of the income category to delete. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     # Gets the name.
     while True:
         print('')

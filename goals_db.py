@@ -9,6 +9,16 @@ import os
 
 # Creates database if it doesn't exist.
 def create():
+    """
+    Creates the goals database if it doesn't already exist.
+
+    Args:
+        None
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
     except sqlite3.OperationalError:
@@ -33,6 +43,16 @@ def create():
 
 # Gets goal info based on a name.
 def get_goal_info(name):
+    """
+    Gets the info for a goal based on a given name.
+
+    Args:
+        name: The name of the goal to get the info of. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        goal_info: The goal information as a list. (list of str, float)
+    """
     goal_info = []
     try:
         db = sqlite3.connect('data/tracker')
@@ -52,6 +72,16 @@ def get_goal_info(name):
 
 # Gets goals info based on the category.
 def get_goals_list(category):
+    """
+    Gets the info for some goals based on a given category.
+
+    Args:
+        category: The name of the category of goals to get the info of. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        goals_info: The goal information as a list of tuples. (list of tuples of str, float)
+    """
     goals_info = []
     try:
         db = sqlite3.connect('data/tracker')
@@ -71,6 +101,16 @@ def get_goals_list(category):
 
 # Adds a goal.
 def add_goal(goal_info):
+    """
+    Adds a new goal to the goals database.
+
+    Args:
+        goal_info: The goal info to add to the database. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
@@ -89,6 +129,17 @@ def add_goal(goal_info):
 
 # Updates a goal.
 def update_goal(name, updated_goal_info):
+    """
+    Updates a goal in the goals database.
+
+    Args:
+        name: The name of the goal to be updated. (str)
+        updated_goal_info: The goal info used to update the database. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
@@ -105,7 +156,19 @@ def update_goal(name, updated_goal_info):
         db.close()
     return [0, 0]
 
+# Updates the progress value of a saving goal.
 def update_saving_goal_progress(goal_name, new_progress):
+    """
+    Updates the progress value of a saving goal.
+
+    Args:
+        goal_name: The name of the goal to update. (str)
+        new_progress: The value of progress. (float)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
@@ -123,6 +186,17 @@ def update_saving_goal_progress(goal_name, new_progress):
 
 # Deletes a goal.
 def delete_goal(name, category):
+    """
+    Deletes a goal in the goals database.
+
+    Args:
+        name: The name of the goal to be deleted. (str)
+        category: The category of the goal to be deleted. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()

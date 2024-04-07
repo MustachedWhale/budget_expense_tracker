@@ -1,7 +1,18 @@
 # Utility functions for the budget part of the tracker.
 import global_utils
 
+# Gets the name of the expense category to change the budget of.
 def get_cat_to_set(expense_categories):
+    """
+    Gets the name of the expense category to change the budget of.
+
+    Args:
+        expense_categories: A list of the names of expense categories (list of str).
+        
+    Returns:
+        cat_input: The name of the category the user wishes to change the budget of (str).
+        1: If the user wishes to return to the previous menu (int).
+    """
     while True:
         print('')
         cat_input = input('''Please enter the name of the category you wish to change the budget of.
@@ -14,7 +25,18 @@ Enter 0 to return to the previous menu.
                 return cat_input
         print("\nThe name you entered does not match an existing category.")
 
+# Gets the name of a category the user would like to view a breakdown of.
 def get_cat_to_view(expense_categories):
+    """
+    Gets the name of a category the user would like to view a breakdown of.
+
+    Args:
+        expense_categories: A list of the names of expense categories (list of str).
+        
+    Returns:
+        cat_input: The name of the category the user wishes to view the breakdown of (str).
+        1: If the user wishes to return to the previous menu (int).
+    """
     while True:
         print('')
         cat_input = input('''If you'd like to view the breakdown for a particular category, enter its name now.
@@ -27,7 +49,18 @@ Otherwise, enter 0 to return to the previous menu.
                 return cat_input
         print("\nThe name you entered does not match an existing category.")
 
+# Gets the budget for a category from the user.
 def get_budget_to_set(expense_category):
+    """
+    Gets the budget for a category from the user.
+
+    Args:
+        expense_category: The name of the expense category whose budget is being set (str).
+        
+    Returns:
+        budget: The value of the category budget (float).
+        1: If the user wishes to return to the previous menu (int).
+    """
     while True:
         print('')
         budget_input = input(f'''Please enter a budget for {global_utils.name_capitalise(expense_category)}. Enter 0 to return to the previous menu.
@@ -43,8 +76,19 @@ def get_budget_to_set(expense_category):
             print("\nPlease enter a valid amount.")
             continue
         return budget
-    
+
+# Shows the user a breakdown of a selected category.    
 def cat_breakdown(category_name, cat_data):
+    """
+    Shows the user a breakdown of a selected category.
+
+    Args:
+        category_name: The name of the category to be broken down (str).
+        cat_data: Category data from the database (list of tuples of strings and floats).
+        
+    Returns:
+        None
+    """
     # Gets rid of the rest of the category data.
     for cat in cat_data:
         if category_name == cat[0]:

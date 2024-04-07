@@ -4,20 +4,40 @@ import global_utils
 
 # Gets the name of a new saving goal.
 def get_new_saving_goal_name(current_saving_goals):
-        while True:
-            print('')
-            name_input = input('''Please describe the goal. The name must be unique.
+    """
+    Gets the name of a new saving goal.
+
+    Args:
+        current_saving_goals: A list of the existing saving goals. (list of tuples of str, floats)
+        
+    Returns:
+        name_input: The name of the new saving goal. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
+    while True:
+        print('')
+        name_input = input('''Please describe the goal. The name must be unique.
 Enter 0 to return to the previous menu.
 : ''').lower()
-            if name_input == '0':
-                return 1
-            if name_input in current_saving_goals:
-                print("\nThe income name you entered matches an existing name.")
-                continue
-            return name_input
+        if name_input == '0':
+            return 1
+        if name_input in current_saving_goals:
+            print("\nThe income name you entered matches an existing name.")
+            continue
+        return name_input
         
 # Gets the amount of a new goal.
 def get_new_goal_amount():
+    """
+    Gets the target amount of a new saving goal.
+
+    Args:
+        None
+        
+    Returns:
+        amount: The target amount of the new saving goal. (float)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         amount_input = input('''Please enter a target amount. Enter 0 to return to the previous menu.
@@ -36,6 +56,16 @@ def get_new_goal_amount():
 
 # Gets the name of an income category for a new goal.
 def get_cat_name(current_income_cats):
+    """
+    Gets the name of the income category for a new saving goal.
+
+    Args:
+        current_income_cats: A list of the existing income categories. (list of str)
+        
+    Returns:
+        cat_input: The name of the saving goal category. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         cat_input = input('''Please enter the name of the category you wish to add a goal to. Enter 0 to cancel.
@@ -49,6 +79,16 @@ def get_cat_name(current_income_cats):
 
 # Gets the total income of an income category.
 def get_income_of_category(category):
+    """
+    Gets the total income of an income category.
+
+    Args:
+        category: The name of the income category. (str)
+        
+    Returns:
+        category_income: The name of the category of the new saving goal. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     category_income = income_db.get_cat_income(category)
     if type(category_income) == float:
         return category_income
@@ -60,6 +100,17 @@ def get_income_of_category(category):
 
 # Gets the name of the goal to edit.
 def get_goal_to_edit(income_goals, saving_goals):
+    """
+    Gets the name of a goal to edit and the category that it's in.
+
+    Args:
+        income_goals: A list of income goals. (list of str)
+        saving_goals: A list of saving goals. (list of str)
+        
+    Returns:
+        [name_input, choice_result]: A list of the name of the goal and the name of either income or saving. (list of str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         name_input = input('''Please enter the name of the goal you want to edit. Enter 0 to return to the previous menu.
@@ -89,6 +140,17 @@ def get_goal_to_edit(income_goals, saving_goals):
 
 # Gets a new name for the goal if required.
 def get_edit_goal_name(current_saving_goals, goal_name):
+    """
+    Gets the new name of a saving goal.
+
+    Args:
+        current_saving_goals: A list of the existing saving goals. (list of tuples of str, floats)
+        goal_name: The name of the goal to be edited. (str)
+        
+    Returns:
+        new_name_input: The new name for a saving goal. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     # Checks if the user wants to edit the goal name.    
     while True:
         print('')
@@ -122,6 +184,16 @@ Enter 0 to return to the previous menu.
 
 # Gets a new target amount for the goal if required. 
 def get_edit_goal_target(goal_target):
+    """
+    Gets a new target amount for a goal.
+
+    Args:
+        goal_target: The old target for the goal. (float)
+        
+    Returns:
+        new_amount: The new amount for the goal target. (float)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     # Checks if the user wants to edit the goal target.
     while True:
         print('')
@@ -154,6 +226,16 @@ Would you like to change it? Please enter yes or no.
 
 # Gets a new progress amount for the goal if required.
 def get_edit_goal_progress(goal_progress):
+    """
+    Gets a new progress amount for a goal.
+
+    Args:
+        goal_progress: The current progress amount for a goal. (float)
+        
+    Returns:
+        new_amount: The new amount for the progress. (float)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     # Checks if the user wants to edit the goal progress.
     while True:
         print('')
@@ -186,6 +268,17 @@ Would you like to change it? Please enter yes or no.
 
 # Gets the name of the goal to delete.
 def get_goal_to_delete(income_goals, saving_goals):
+    """
+    Gets the name of a goal to delete.
+
+    Args:
+        income_goals: A list of the existing income goals. (list of tuples of str, floats)
+        saving_goals: A list of the existing saving goals. (list of tuples of str, floats)    
+        
+    Returns:
+        [name_input, choice_result]: A list of the name of the goal and the name of either income or saving. (list of str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         name_input = input('''Please enter the name of the goal you want to delete. Enter 0 to return to the previous menu.
@@ -215,6 +308,16 @@ def get_goal_to_delete(income_goals, saving_goals):
 
 # Gets the name of the goal to add to.
 def get_goal_to_add_to(saving_goals):
+    """
+    Gets the name of a goal to add money to.
+
+    Args:
+        saving_goals: A list of the existing saving goals. (list of tuples of str, floats)    
+        
+    Returns:
+        goal_input: The name of the goal to add money to. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         goal_input = input('''Please enter the name of the goal you want to add to. Enter 0 to return to the previous menu.
@@ -229,6 +332,16 @@ def get_goal_to_add_to(saving_goals):
 
 # Gets the amount to add to the goal.
 def get_amount_to_add_to_goal():
+    """
+    Gets the amount of money to add to a goal.
+
+    Args:
+        None    
+        
+    Returns:
+        amount: The amount of money to add to a goal. (float)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         amount_input = input('''Please enter the amount you want to add to this goal. Enter 0 to return to the previous menu.
@@ -246,7 +359,17 @@ def get_amount_to_add_to_goal():
         return amount
 
 # Gets the choice if a goal is present in both the income and saving goals lists.
-def choose_income_or_savings(name, income_goals, saving_goals):
+def choose_income_or_savings(name):
+    """
+    Gets a choice if a goal is present in both the income goals and saving goals lists.
+
+    Args:
+        name: The goal name. (str)    
+        
+    Returns:
+        'saving' / 'income': The choice the user chooses. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     print(f"\n{global_utils.name_capitalise(name)} is present as both a saving goal and an income goal.")
     while True:
         choice_input = input('''Please enter 'saving' to select the saving goal, or 'income' to select the income goal.
@@ -263,6 +386,15 @@ Enter 0 to return to the previous menu.
 
 # Updates the income goals when income is updated.
 def update_income_goals():
+    """
+    Updates all income goals based on the latest database information.
+
+    Args:
+        None    
+        
+    Returns:
+        None
+    """
     # Get list of current income categories.
     current_income_cats = income_db.get_cat_list()
     # If the list is not empty (there might be no categories added).

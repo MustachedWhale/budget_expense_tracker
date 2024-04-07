@@ -6,6 +6,15 @@ import global_utils
 # Contains all the menu functions for the expenses section of the tracker.
 
 def main_menu():
+    """
+    Lets the user select an expense option.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     print("\nExpense Options")
 
     while True:
@@ -54,6 +63,15 @@ def main_menu():
 
 # Adds an expense.     
 def add_expense():
+    """
+    Lets the user add a new expense.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current expense categories.
     current_expense_cats = expenses_db.get_cat_names()
     # If the list is not empty (there might be no categories added).
@@ -117,8 +135,6 @@ def add_expense():
     new_expense_date = datetime.datetime.today().strftime('%Y-%m-%d')
     new_expense_info.append(new_expense_date)
 
-    #print(new_expense_info)
-
     # Adds the new expense to the tracker.
     add_expense_result = expenses_db.add_expense(new_expense_info)
     if add_expense_result[0] == 1:
@@ -133,6 +149,15 @@ def add_expense():
 
 # Deletes an expense
 def delete_expense():
+    """
+    Lets the user delete an expense.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current expense names.
     current_expense_names = expenses_db.get_name_list()
     # If the list is not empty (there might be no expenses added).
@@ -178,6 +203,15 @@ def delete_expense():
 
 # Edits an expense.
 def edit_expense():
+    """
+    Lets the user edit an expense.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current expense categories.
     current_expense_cats = expenses_db.get_cat_names()
     # If the list is not empty (there might be no categories added).
@@ -290,6 +324,15 @@ def edit_expense():
 
 # Views all expenses.
 def view_all():
+    """
+    Lets the user view all expenses.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of all expenses.
     expense_info = expenses_db.get_all_expenses()
     # If the list is empty.
@@ -318,6 +361,15 @@ def view_all():
 
 # Views expenses by category.
 def view_by_category():
+    """
+    Lets the user view expenses by category.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current expense categories.
     current_expense_cats = expenses_db.get_cat_names()
 
@@ -376,6 +428,15 @@ def view_by_category():
 
 # Adds a new expense category.
 def add_category():
+    """
+    Lets the user add a new expense category.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current expense categories.
     current_expense_cats = expenses_db.get_cat_names()
     # If the list is not empty.
@@ -430,6 +491,15 @@ def add_category():
 
 # Deletes an expense category.
 def delete_category():
+    """
+    Lets the user delete an expense category.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current expense categories.
     current_expense_cats = expenses_db.get_cat_names()
     # If the list is not empty.

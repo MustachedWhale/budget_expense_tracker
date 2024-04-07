@@ -3,6 +3,16 @@ import global_utils
 
 # Gets the name of a new category.
 def get_new_cat_name(current_expense_cats):
+    """
+    Gets the name of a new expense category.
+
+    Args:
+        current_expense_cats: A list of the names of the current expense categories. (list of str)
+        
+    Returns:
+        cat_input: The name of the new expense category. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         cat_input = input('''Please describe the expense category. The name must be unique.
@@ -17,6 +27,16 @@ Enter 0 to return to the previous menu.
 
 # Gets the name of an expense category for a new expense.
 def get_new_expense_cat(current_expense_cats):
+    """
+    Gets the name of the expense category of a new expense.
+
+    Args:
+        current_expense_cats: A list of the names of the current expense categories. (list of str)
+        
+    Returns:
+        cat_input: The name of the expense category of the new expense. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         cat_input = input('''Please enter the name of the category you wish to add the expense to. Enter 0 to cancel.
@@ -30,6 +50,16 @@ def get_new_expense_cat(current_expense_cats):
 
 # Gets the name of a new expense.
 def get_new_expense_name(current_expense_names):
+    """
+    Gets the name of a new expense.
+
+    Args:
+        current_expense_names: A list of the names of the existing expenses. (list of str)
+        
+    Returns:
+        name_input: The name of the new expense. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         name_input = input('''Please describe the expense. It must be unique.
@@ -44,6 +74,16 @@ Enter 0 to return to the previous menu.
 
 # Gets the amount of a new expense.
 def get_new_expense_amount():
+    """
+    Gets the value of the new expense.
+
+    Args:
+        None
+        
+    Returns:
+        amount: The value of the new expense. (float)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     while True:
         print('')
         amount_input = input('''Please enter the amount of the expense. Enter 0 to return to the previous menu.
@@ -62,6 +102,17 @@ def get_new_expense_amount():
 
 # Gets the category for an expense edit. 
 def get_edit_expense_cat(current_expense_cats, current_expense_info):
+    """
+    Checks if the user wants to edit the category of an expense and gets the new category if they do.
+
+    Args:
+        current_expense_cats: A list of the names of the current expense categories. (list of str)
+        current_expense_info: A list of the current expense info. (list of strings, floats)
+        
+    Returns:
+        new_cat_input: The name of the expense category of the edited expense. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """
     # Checks if the user wants to edit the expense category.
     while True:
         print('')
@@ -94,6 +145,17 @@ Would you like to change it? Please enter yes or no.
 
 # Gets a new name for an expense edit.
 def get_edit_expense_name(current_expense_names, current_expense_info):
+    """
+    Checks if the user wants to edit the name of an expense and gets the new name if they do.
+
+    Args:
+        current_expense_names: A list of the names of the current expenses. (list of str)
+        current_expense_info: A list of the current expense info. (list of strings, floats)
+        
+    Returns:
+        new_name_input: The new name of the expense. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """    
     # Checks if the user wants to edit the expense name.    
     while True:
         print('')
@@ -127,6 +189,16 @@ Enter 0 to return to the previous menu.
 
 # Gets a new amount for an expense edit.
 def get_edit_expense_amount(current_expense_info):
+    """
+    Checks if the user wants to edit the value of an expense and gets the new value if they do.
+
+    Args:
+        current_expense_info: A list of the current expense info. (list of strings, floats)
+        
+    Returns:
+        new_amount: The new value of the expense. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """ 
     # Checks if the user wants to edit the expense amount.
     while True:
         print('')
@@ -159,6 +231,16 @@ Would you like to change it? Please enter yes or no.
         
 # Gets the name of the expense to edit.        
 def get_expense_to_edit(current_expense_names):
+    """
+    Gets the name of the expense the user wants to change.
+
+    Args:
+        current_expense_names: A list of the names of the current expenses. (list of str)
+        
+    Returns:
+        name_input: The name of the expense the user wants to edit. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """ 
     while True:
         print('')
         name_input = input('''Please enter the name of the expense you want to edit. Enter 0 to return to the previous menu.
@@ -172,6 +254,16 @@ def get_expense_to_edit(current_expense_names):
 
 # Gets the name of the expense to delete.
 def get_expense_to_delete(current_expense_names):
+    """
+    Gets the name of the expense the user wants to delete.
+
+    Args:
+        current_expense_names: A list of the names of the current expenses. (list of str)
+        
+    Returns:
+        name_input: The name of the expense the user wants to edit. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """ 
     while True:
         print('')
         name_input = input('''Please enter the name of the expense you want to delete. Enter 0 to return to the previous menu.
@@ -185,6 +277,16 @@ def get_expense_to_delete(current_expense_names):
 
 # Gets the name of the category to view.
 def get_cat_to_view(current_expense_cats):
+    """
+    Gets the name of the expense category the user wants to view.
+
+    Args:
+        current_expense_cats: A list of the names of the current expense categories. (list of str)
+        
+    Returns:
+        cat_input: The name of the expense category the user wants to view. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """ 
     while True:
         print('')
         cat_input = input('''Please enter the name of the category you want to view. Enter 0 to return to the previous menu.
@@ -198,6 +300,16 @@ def get_cat_to_view(current_expense_cats):
 
 # Gets the name of the category to delete.
 def get_cat_to_delete(current_expense_cats):
+    """
+    Gets the name of the expense category the user wants to delete.
+
+    Args:
+        current_expense_cats: A list of the names of the current expense categories. (list of str)
+        
+    Returns:
+        cat_input: The name of the expense category the user wants to view. (str)
+        1: If the user wishes to return to the previous menu. (int)
+    """ 
     # Gets the name.
     while True:
         print('')

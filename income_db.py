@@ -9,6 +9,16 @@ import os
 
 # Creates income database if it doesn't exist.
 def create_income():
+    """
+    Creates the income database if it doesn't already exist.
+
+    Args:
+        None
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
     except sqlite3.OperationalError:
@@ -32,7 +42,17 @@ def create_income():
     return [0, 0]
 
 # Creates income_cats database if it doesn't exist.
-def create_income_cats():    
+def create_income_cats():
+    """
+    Creates the income categories database if it doesn't already exist.
+
+    Args:
+        None
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """  
     try:
         db = sqlite3.connect('data/tracker')
     except sqlite3.OperationalError:
@@ -53,6 +73,16 @@ def create_income_cats():
 
 # Gets a list of categories.
 def get_cat_list():
+    """
+    Gets a list of income categories from the database.
+
+    Args:
+        None
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     cat_list = []
     try:
         db = sqlite3.connect('data/tracker')
@@ -72,6 +102,16 @@ def get_cat_list():
 
 # Gets a list of income names.
 def get_name_list():
+    """
+    Gets a list of names from the income database.
+
+    Args:
+        None
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     name_list = []
     try:
         db = sqlite3.connect('data/tracker')
@@ -91,6 +131,16 @@ def get_name_list():
         
 # Gets specific income data.
 def get_income(search_term):
+    """
+    Gets data for a specific income.
+
+    Args:
+        search_term: The search term to search the database for. (str or float)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        income_info: The info of a specific income. (list of strings and floats)
+    """
     income_info = []
     try:
         db = sqlite3.connect('data/tracker')
@@ -110,6 +160,16 @@ def get_income(search_term):
 
 # Gets all income data.
 def get_all_income():
+    """
+    Gets data for all income.
+
+    Args:
+        None
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        income_info: A list of info of a specific income. (list of tuples of strings and floats)
+    """
     income_info = []
     try:
         db = sqlite3.connect('data/tracker')
@@ -127,6 +187,16 @@ def get_all_income():
 
 # Gets the total income amount of a category.
 def get_cat_income(category):
+    """
+    Gets the total income of a category.
+
+    Args:
+        category: The category to get the amount of income from. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        income_total: The total amount of income for an income category. (float)
+    """
     income_total = 0.0
     try:
         db = sqlite3.connect('data/tracker')
@@ -145,8 +215,18 @@ def get_cat_income(category):
         db.close()
     return income_total
 
-# Gets income from a single category.
+# Gets income data from a single category.
 def get_income_from_category(category):
+    """
+    Gets the income data of a single category.
+
+    Args:
+        category: The category to get the income data from. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        income_info: The income information from the database. (list of str, floats)
+    """
     income_info = []
     try:
         db = sqlite3.connect('data/tracker')
@@ -166,6 +246,16 @@ def get_income_from_category(category):
 
 # Adds an income.
 def add_income(income_info):
+    """
+    Adds an income to the database.
+
+    Args:
+        income_info: A list of income information. (list of str, floats)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
@@ -184,6 +274,16 @@ def add_income(income_info):
 
 # Deletes an income.
 def delete_income(name):
+    """
+    Deletes an income from the database.
+
+    Args:
+        name: The name of an income. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
@@ -201,6 +301,17 @@ def delete_income(name):
 
 # Updates the information of an income.
 def update_income(updated_income_info, income_name):
+    """
+    Updates the income information in the database.
+
+    Args:
+        updated_income_info: A list of the new income information. (list of str, floats)
+        income_name: The name of the income to be updated. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
@@ -219,6 +330,16 @@ def update_income(updated_income_info, income_name):
 
 # Deletes income associated with a category.
 def delete_income_from_cat(category):
+    """
+    Deletes the income associated with a category from the database.
+
+    Args:
+        category: The category to delete the income from. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
@@ -236,6 +357,16 @@ def delete_income_from_cat(category):
 
 # Adds a new income category.
 def add_income_cat(name):
+    """
+    Adds an income category to the database.
+
+    Args:
+        name: The name of the new income category. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()
@@ -252,6 +383,16 @@ def add_income_cat(name):
 
 # Deletes an income category.
 def delete_income_cat(name):
+    """
+    Deletes an income category from the database.
+
+    Args:
+        name: The name of the new income category. (str)
+        
+    Returns:
+        [1, e]: 1 is a fault code to show something has gone wrong and e is the sqlite3 error. (str)
+        [0, 0]: 0 shows that nothing has gone wrong.
+    """
     try:
         db = sqlite3.connect('data/tracker')
         cursor = db.cursor()

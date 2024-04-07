@@ -6,6 +6,15 @@ import global_utils
 # Contains all the menu functions for the budget section.
 
 def main_menu():
+    """
+    Lets the user select a budget option.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     print("\nBudgeting Options")
 
     while True:
@@ -39,6 +48,15 @@ def main_menu():
         
 # Sets or edits a budget.
 def edit_budget():
+    """
+    Sets or edits a budget for an expense category.
+
+    Args:
+        None
+        
+    Returns:
+        None
+    """
     # Get list of current expense categories.
     current_expense_cats = expenses_db.get_cat_list()
     # If the list is empty.
@@ -100,6 +118,15 @@ def edit_budget():
 
 # Shows budgets.
 def view_budget():
+    """
+    Views expense category budgets.
+
+    Args:
+        None
+        
+    Returns:
+        None
+    """
     # Get list of current expense categories.
     current_expense_cats = expenses_db.get_cat_list()
     # If the list is empty.

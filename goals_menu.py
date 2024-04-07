@@ -6,6 +6,15 @@ import global_utils
 # Contains all the menu functions for the goals section.
 
 def main_menu():
+    """
+    Lets the user select a goals option.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     print("\nGoal Options")
 
     while True:
@@ -49,6 +58,15 @@ def main_menu():
 
 # Creates a saving goal.
 def create_saving_goal():
+    """
+    Creates a saving goal.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current saving goals.
     current_saving_goals = goals_db.get_goals_list('saving')
     # If the list is not empty (there might be no goals added).
@@ -107,6 +125,15 @@ def create_saving_goal():
 
 # Creates an income goal.
 def create_income_goal():
+    """
+    Creates an income goal.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current income goals.
     current_income_goals = goals_db.get_goals_list('income')
     # If the list is not empty (there might be no goals added).
@@ -184,6 +211,15 @@ def create_income_goal():
 
 # Edits a goal.
 def edit_goal():
+    """
+    Edits a goal.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current saving goals.
     current_saving_goals = goals_db.get_goals_list('saving')
     # If the list is not empty (there might be no goals added).
@@ -318,6 +354,15 @@ def edit_goal():
 
 # Deletes a goal.
 def delete_goal():
+    """
+    Deletes a goal.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current saving goals.
     current_saving_goals = goals_db.get_goals_list('saving')
     # If the list is not empty (there might be no goals added).
@@ -395,6 +440,15 @@ def delete_goal():
 
 # Adds money to a saving goal.
 def add_to_saving_goal():
+    """
+    Adds money into a saving goal.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current saving goals.
     current_saving_goals = goals_db.get_goals_list('saving')
     # If the list is not empty (there might be no goals added).
@@ -450,6 +504,15 @@ def add_to_saving_goal():
 
 # Views all goals.
 def view_all_goals():
+    """
+    Prints all goals to the user.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Get list of current saving goals.
     current_saving_goals = goals_db.get_goals_list('saving')
     # If the list is not empty (there might be no goals added).
